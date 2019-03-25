@@ -27,10 +27,8 @@ public class OrderRepository {
     }
 
 
-    public OrderDTO update(Long id, OrderDTO orderDTO){
-        OrderDTO orderDTODb = findById(id);
-        int index = orders.indexOf(orderDTODb);
-        orderDTO.setId(orderDTODb.getId());
+    public OrderDTO update(OrderDTO orderDTO){
+        int index = orders.indexOf(orderDTO);
         orders.set(index, orderDTO);
         return orderDTO;
     }

@@ -29,6 +29,10 @@ public class OrderController {
 
         OrderDTO orderDTO = orderService.findById(id);
 
+        if(orderDTO == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(orderDTO);
     }
 
@@ -46,13 +50,18 @@ public class OrderController {
 
         orderDTO = orderService.update(id,orderDTO);
 
+        if(orderDTO == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body("{ \"order\" : \"/order/"+orderDTO.getId()+ "\"}");
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<OrderDTO> delete(@PathVariable Long id) {
-        return new ResponseEntity<>(orderService.delete(id),HttpStatus.OK);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        orderService.delete(id);
     }
 
     @GetMapping("/")

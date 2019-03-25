@@ -28,7 +28,16 @@ public class OrderService {
 
 
     public OrderDTO update(Long id, OrderDTO orderDTO){
-        return orderRepository.update(id, orderDTO);
+
+        OrderDTO orderDb = orderRepository.findById(id);
+
+        if(orderDb == null){
+            return null;
+        }
+
+        orderDTO.setId(orderDb.getId());
+
+        return orderRepository.update(orderDTO);
     }
 
     public OrderDTO delete(Long id){
