@@ -1,5 +1,7 @@
 package br.com.fiap.order.service;
 
+import br.com.fiap.order.exceptionhandler.DataIntegrityViolationException;
+import br.com.fiap.order.exceptionhandler.EmptyResultDataAccessException;
 import br.com.fiap.order.model.OrderDTO;
 import br.com.fiap.order.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +21,34 @@ public class OrderService {
     }
 
     public OrderDTO findById(Long id) {
-        return orderRepository.findById(id);
+
+        OrderDTO orderDb = orderRepository.findById(id);
+
+        if(orderDb == null){
+            throw new EmptyResultDataAccessException();
+        }
+
+        return orderDb;
     }
 
     public OrderDTO save(OrderDTO orderDTO){
+
+
+        if(orderDTO.getEmail() == null || orderDTO.getEmail().trim().equals("")){
+            throw new DataIntegrityViolationException("Email não pode ser nulo");
+        }
+
         return orderRepository.save(orderDTO);
     }
 
 
     public OrderDTO update(Long id, OrderDTO orderDTO){
 
-        OrderDTO orderDb = orderRepository.findById(id);
-
-        if(orderDb == null){
-            return null;
+        if(orderDTO.getEmail() == null || orderDTO.getEmail().trim().equals("")){
+            throw new DataIntegrityViolationException("Email não pode ser nulo");
         }
+
+        OrderDTO orderDb = orderRepository.findById(id);
 
         orderDTO.setId(orderDb.getId());
 

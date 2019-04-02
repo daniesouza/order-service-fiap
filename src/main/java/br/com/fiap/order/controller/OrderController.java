@@ -29,10 +29,6 @@ public class OrderController {
 
         OrderDTO orderDTO = orderService.findById(id);
 
-        if(orderDTO == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
         return ResponseEntity.status(HttpStatus.OK).body(orderDTO);
     }
 
@@ -49,10 +45,6 @@ public class OrderController {
     public ResponseEntity update(@PathVariable Long id, @RequestBody @Valid OrderDTO orderDTO) {
 
         orderDTO = orderService.update(id,orderDTO);
-
-        if(orderDTO == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
 
         return ResponseEntity.status(HttpStatus.OK).body("{ \"order\" : \"/order/"+orderDTO.getId()+ "\"}");
     }
